@@ -1,0 +1,6 @@
+{
+  "name": "Quran Class Poster",
+  "description": "Interactive 1-paged promotional poster for Nigerian Muslims' Association of Western Australia's proposed beginners' Quran class.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
