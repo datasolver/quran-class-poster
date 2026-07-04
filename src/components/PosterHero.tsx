@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import { BookOpen, Calendar, Globe, Award, Sparkles, ArrowRight } from 'lucide-react';
-
+import quranImg from "@/src/assets/images/quran_medium.jpg";
 interface PosterHeroProps {
   onRegisterClick: () => void;
   registeredCount: number;
@@ -142,7 +142,7 @@ export default function PosterHero({ onRegisterClick, registeredCount }: PosterH
               
               {/* Actual Generated Image from the platform */}
               <img 
-                src=".\src\assets\images\quran-medium.jpg" 
+                src={quranImg}
                 alt="Sacred Quran on a Rehal stand with glowing light"
                 className="rounded w-full h-auto object-cover border border-brand-gold/30 shadow-inner"
                 referrerPolicy="no-referrer"
