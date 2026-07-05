@@ -224,7 +224,7 @@ export default function RegistrationForm({ googleFormUrl, setGoogleFormUrl }: Re
                     <form onSubmit={handleSaveUrl} className="space-y-3">
                       <div>
                         <label className="block text-[10px] font-bold text-brand-gold uppercase tracking-wider mb-1.5">
-                          https://docs.google.com/forms/d/e/1FAIpQLSeCcbSTywq8fDkxNCDBFSpP93djDdeh0In9M9JWsFg077JJbw/viewform?usp=publish-editor
+                          https://docs.google.com/forms/d/e/1FAIpQLSeCcbSTywq8fDkxNCDBFSpP93djDdeh0In9M9JWsFg077JJbw/viewform?embedded=true
                         </label>
                         <div className="flex flex-col sm:flex-row gap-2">
                           <input
