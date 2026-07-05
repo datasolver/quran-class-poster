@@ -81,58 +81,51 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
+    if (!validate()) return;
 
-  if (!validate()) return;
+    setIsSubmitting(true);
 
-  setIsSubmitting(true);
-
-  try {
-    const timestamp = new Date().toLocaleDateString('en-AU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-
-    const payload: RegistrationFormData = {
+    const newRecord: RegistrationFormData = {
       ...formData,
-      dateSubmitted: timestamp,
+      dateSubmitted: new Date().toLocaleDateString('en-AU', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
     };
 
-    const result = await registerStudent(payload);
+    // // Save to local storage list
+    // const updatedList = [...userRegistrations, newRecord];
+    // setUserRegistrations(updatedList);
+    // localStorage.setItem('nmawa_quran_registrations', JSON.stringify(updatedList));
+    
+    const result = await registerStudent(formData);
 
-    if (!result?.success) {
-      alert(result?.message || 'Registration failed.');
-      return;
+    if (result.success) {
+        alert(
+                `Registration successful!\nRegistration ID: ${result.registrationId}`
+            );
+    } else {
+        setIsSubmitting(false);
+        alert(result.message);
     }
-
-    const newRecord = {
-      ...payload,
-    };
-
-    // Success UI state updates
+    
+    // Update global cohort counter (simulated + actual)
     setSubmittedData(newRecord);
     setIsSubmitted(true);
-    setRegistrationId(result.registrationId);
-
     const newCount = currentCount + 1;
     onSuccess(newCount);
+    setRegistrationId(result.registrationId);
 
-    alert(`Registration successful!\nRegistration ID: ${result.registrationId}`);
-
-    // Scroll only on success
+    // Smooth scroll to top of form section to see confirmation
     const section = document.getElementById('registration-section');
-    section?.scrollIntoView({ behavior: 'smooth' });
-
-  } catch (error) {
-    console.error('Registration error:', error);
-    alert('Something went wrong. Please try again later.');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleResetForm = () => {
     setFormData({
