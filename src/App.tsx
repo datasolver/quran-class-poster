@@ -18,7 +18,7 @@ export default function App() {
   const [registeredCount, setRegisteredCount] = useState(BASE_SIMULATED_COUNT);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  const DEFAULT_GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdy4bT9Xl-vH0Zc_L_84nKz80pMv_L1uIqYjQxL1Fk9hK6wXg/viewform?embedded=true';
+  const DEFAULT_GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSeCcbSTywq8fDkxNCDBFSpP93djDdeh0In9M9JWsFg077JJbw/viewform?embedded=true';
   const [googleFormUrl, setGoogleFormUrl] = useState(() => {
     return localStorage.getItem('nmawa_google_form_url') || DEFAULT_GOOGLE_FORM_URL;
   });
