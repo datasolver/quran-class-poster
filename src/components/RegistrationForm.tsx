@@ -19,7 +19,7 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
     currentLevel: 'absolute-beginner',
     preferredDays: [],
     comments: ''
-  });
+  } as any); // Type assertion to any to avoid type errors on initial state
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,48 +82,55 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validate()) return;
 
     setIsSubmitting(true);
 
-    const newRecord: RegistrationFormData = {
-      ...formData,
-      dateSubmitted: new Date().toLocaleDateString('en-AU', {
+    try {
+      const timestamp = new Date().toLocaleDateString('en-AU', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
-      })
-    };
+        minute: '2-digit',
+      });
 
-    // // Save to local storage list
-    // const updatedList = [...userRegistrations, newRecord];
-    // setUserRegistrations(updatedList);
-    // localStorage.setItem('nmawa_quran_registrations', JSON.stringify(updatedList));
-    
-    const result = await registerStudent(formData);
+      const payload: RegistrationFormData = {
+        ...formData,
+        dateSubmitted: timestamp,
+      };
 
-    if (result.success) {
-        alert(
-                `Registration successful!\nRegistration ID: ${result.registrationId}`
-            );
-    } else {
-        setIsSubmitting(false);
-        alert(result.message);
-    }
-    
-    // Update global cohort counter (simulated + actual)
-    setSubmittedData(newRecord);
-    setIsSubmitted(true);
-    const newCount = currentCount + 1;
-    onSuccess(newCount);
-    setRegistrationId(result.registrationId);
+      const result = await registerStudent(payload);
 
-    // Smooth scroll to top of form section to see confirmation
-    const section = document.getElementById('registration-section');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      if (!result?.success) {
+        alert(result?.message || 'Registration failed.');
+        return;
+      }
+
+      const newRecord = {
+        ...payload,
+      };
+
+      // Success UI state updates
+      setSubmittedData(newRecord);
+      setIsSubmitted(true);
+      setRegistrationId(result.registrationId);
+
+      const newCount = currentCount + 1;
+      onSuccess(newCount);
+
+      alert(`Registration successful!\nRegistration ID: ${result.registrationId}`);
+
+      // Scroll only on success
+      const section = document.getElementById('registration-section');
+      section?.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

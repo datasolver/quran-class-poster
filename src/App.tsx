@@ -14,7 +14,7 @@ import FAQ from './components/FAQ';
 import NmawaAbout from './components/NmawaAbout';
 
 export default function App() {
-  const BASE_SIMULATED_COUNT = 34;
+  const BASE_SIMULATED_COUNT = 0;
   const [registeredCount, setRegisteredCount] = useState(BASE_SIMULATED_COUNT);
   const [showScrollTop, setShowScrollTop] = useState(false);
 

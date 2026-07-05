@@ -7,7 +7,7 @@ export interface RegistrationFormData {
   fullName: string;
   email: string;
   phone: string;
-  ageGroup: string;
+  gender: string;
   currentLevel: string;
   preferredDays: string[];
   comments: string;
