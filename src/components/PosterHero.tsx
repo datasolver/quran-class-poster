@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { BookOpen, Calendar, Globe, Award, Sparkles, ArrowRight } from 'lucide-react';
-import quranImg from "@/src/assets/images/quran_medium.jpg";
+import quranImage from '../assets/images/quran_kareem_illustration_1783151968852.jpg';
+
 interface PosterHeroProps {
   onRegisterClick: () => void;
   registeredCount: number;
@@ -121,10 +122,10 @@ export default function PosterHero({ onRegisterClick, registeredCount }: PosterH
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-gold opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-gold"></span>
                   </span>
-                  <span className="text-xs font-bold text-white uppercase tracking-wider">Send WhatsApp Message to</span>
+                  <span className="text-xs font-bold text-white uppercase tracking-wider"> Registration Form </span>
                 </div>
                 <span className="text-xs text-[#f4f1ea]/80">
-                  <strong className="text-brand-gold-light"> 0420511218 </strong> for link to register.
+                  <strong className="text-brand-gold-light"> Included Below </strong>.
                 </span>
               </div>
             </motion.div>
@@ -142,7 +143,7 @@ export default function PosterHero({ onRegisterClick, registeredCount }: PosterH
               
               {/* Actual Generated Image from the platform */}
               <img 
-                src={quranImg}
+                src={quranImage} 
                 alt="Sacred Quran on a Rehal stand with glowing light"
                 className="rounded w-full h-auto object-cover border border-brand-gold/30 shadow-inner"
                 referrerPolicy="no-referrer"

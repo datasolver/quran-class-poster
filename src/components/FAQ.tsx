@@ -8,7 +8,7 @@ export default function FAQ() {
     {
       id: 'q1',
       question: "Is this class really 100% free?",
-      answer: "Yes, completely! There are no hidden fees, registration charges, or exam costs. This program is fully sponsored by the Nigerian Muslims' Association of Western Australia (NiMAWA) as part of our lifelong educational and spiritual development outreach. Donations to help support material delivery are welcome but never mandatory."
+      answer: "Yes, completely! There are no hidden fees, registration charges, or exam costs. This program is fully sponsored by the Nigerian Muslims' Association of Western Australia (NMAWA) as part of our lifelong educational and spiritual development outreach. Donations to help support material delivery are welcome but never mandatory."
     },
     {
       id: 'q2',
@@ -18,7 +18,7 @@ export default function FAQ() {
     {
       id: 'q3',
       question: "How will online classes be delivered?",
-      answer: "We will use Zoom or Google Meet or WhatsApp. You will receive a recurring link to join the live virtual classroom. The slides, virtual boards, and spelling sheets are fully screenshared, and you will have ample opportunity to unmute and recite directly to the teacher for correction."
+      answer: "We will use Zoom or Google Meet. You will receive a recurring link to join the live virtual classroom. The slides, virtual boards, and spelling sheets are fully screenshared, and you will have ample opportunity to unmute and recite directly to the teacher for correction."
     },
     {
       id: 'q4',

@@ -14,9 +14,14 @@ import FAQ from './components/FAQ';
 import NmawaAbout from './components/NmawaAbout';
 
 export default function App() {
-  const BASE_SIMULATED_COUNT = 0;
+  const BASE_SIMULATED_COUNT = 34;
   const [registeredCount, setRegisteredCount] = useState(BASE_SIMULATED_COUNT);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const DEFAULT_GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdy4bT9Xl-vH0Zc_L_84nKz80pMv_L1uIqYjQxL1Fk9hK6wXg/viewform?embedded=true';
+  const [googleFormUrl, setGoogleFormUrl] = useState(() => {
+    return localStorage.getItem('nmawa_google_form_url') || DEFAULT_GOOGLE_FORM_URL;
+  });
 
   useEffect(() => {
     // Scroll event to show/hide the back-to-top button
@@ -52,6 +57,11 @@ export default function App() {
     setRegisteredCount(updatedCount);
   };
 
+  const handleJoinCohort = () => {
+    // Scroll to the registration iframe embed section
+    scrollToRegistration();
+  };
+
   const scrollToRegistration = () => {
     const element = document.getElementById('registration-section');
     if (element) {
@@ -84,7 +94,7 @@ export default function App() {
               <span className="font-arabic text-xl font-bold leading-none pt-0.5 animate-pulse">ن</span>
             </div>
             <div>
-              <h2 className="text-sm font-bold text-brand-gold tracking-[0.15em] leading-none">NiMAWA</h2>
+              <h2 className="text-sm font-bold text-brand-gold tracking-[0.15em] leading-none uppercase">NiMAWA</h2>
               <p className="text-[10px] text-brand-gold-light/65 font-medium mt-1">Nigerian Muslims' Association of Western Australia</p>
             </div>
           </div>
@@ -103,20 +113,20 @@ export default function App() {
 
         {/* Hero Poster Frame */}
         <PosterHero 
-          onRegisterClick={scrollToRegistration} 
+          onRegisterClick={handleJoinCohort} 
           registeredCount={registeredCount} 
         />
 
         {/* Core Value/Offer Highlights */}
         <Features />
 
-        {/* Interactive Classroom Sandbox
-        <InteractiveAlphabet /> */}
+        {/* Interactive Classroom Sandbox 
+        <InteractiveAlphabet />*/}
 
-        {/* Interactive RSVP Form */}
+        {/* Interactive RSVP Form (Google Form Embed Placeholder) */}
         <RegistrationForm 
-          onSuccess={handleRegisterSuccess} 
-          currentCount={registeredCount} 
+          googleFormUrl={googleFormUrl}
+          setGoogleFormUrl={setGoogleFormUrl}
         />
 
         {/* FAQs */}
