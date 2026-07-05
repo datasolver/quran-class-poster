@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle, Info, Sparkles, User, Mail, Phone, Clock, FileText, Download, Share2, Trash2 } from 'lucide-react';
+import { CheckCircle, Info, Sparkles, User, Mail, Phone, Clock, FileText, Download} from 'lucide-react';
 import { RegistrationFormData } from '../types';
+import { registerStudent } from "@/services/registrationService";
+
 
 interface RegistrationFormProps {
   onSuccess: (updatedCount: number) => void;
@@ -17,25 +19,27 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
     currentLevel: 'absolute-beginner',
     preferredDays: [],
     comments: ''
-  } as any);
+  });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedData, setSubmittedData] = useState<RegistrationFormData | null>(null);
   const [userRegistrations, setUserRegistrations] = useState<RegistrationFormData[]>([]);
+  const [registrationId, setRegistrationId] = useState("");
 
-  // Load existing registrations from local storage
-  useEffect(() => {
-    const saved = localStorage.getItem('nmawa_quran_registrations');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setUserRegistrations(parsed);
-      } catch (e) {
-        console.error('Error parsing registrations', e);
-      }
-    }
-  }, []);
+  // // Load existing registrations from local storage
+  // useEffect(() => {
+  //   const saved = localStorage.getItem('nmawa_quran_registrations');
+  //   if (saved) {
+  //     try {
+  //       const parsed = JSON.parse(saved);
+  //       setUserRegistrations(parsed);
+  //     } catch (e) {
+  //       console.error('Error parsing registrations', e);
+  //     }
+  //   }
+  // }, []);
 
   const handleCheckboxChange = (day: string) => {
     const currentDays = [...(formData.preferredDays || [])];
@@ -76,37 +80,57 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!validate()) return;
 
-    const newRecord: RegistrationFormData = {
-      ...formData,
-      dateSubmitted: new Date().toLocaleDateString('en-AU', {
+    setIsSubmitting(true);
+
+    try {
+      const timestamp = new Date().toLocaleDateString('en-AU', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
-      })
-    };
+        minute: '2-digit',
+      });
 
-    // Save to local storage list
-    const updatedList = [...userRegistrations, newRecord];
-    setUserRegistrations(updatedList);
-    localStorage.setItem('nmawa_quran_registrations', JSON.stringify(updatedList));
+      const payload: RegistrationFormData = {
+        ...formData,
+        dateSubmitted: timestamp,
+      };
 
-    // Update global cohort counter (simulated + actual)
-    const newCount = currentCount + 1;
-    onSuccess(newCount);
+      const result = await registerStudent(payload);
 
-    setSubmittedData(newRecord);
-    setIsSubmitted(true);
-    
-    // Smooth scroll to top of form section to see confirmation
-    const section = document.getElementById('registration-section');
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      if (!result?.success) {
+        alert(result?.message || 'Registration failed.');
+        return;
+      }
+
+      const newRecord = {
+        ...payload,
+      };
+
+      // Success UI state updates
+      setSubmittedData(newRecord);
+      setIsSubmitted(true);
+      setRegistrationId(result.registrationId);
+
+      const newCount = currentCount + 1;
+      onSuccess(newCount);
+
+      alert(`Registration successful!\nRegistration ID: ${result.registrationId}`);
+
+      // Scroll only on success
+      const section = document.getElementById('registration-section');
+      section?.scrollIntoView({ behavior: 'smooth' });
+
+    } catch (error) {
+      console.error('Registration error:', error);
+      alert('Something went wrong. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
