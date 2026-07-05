@@ -81,58 +81,58 @@ export default function RegistrationForm({ onSuccess, currentCount }: Registrati
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!validate()) return;
+  if (!validate()) return;
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    try {
-      const timestamp = new Date().toLocaleDateString('en-AU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
+  try {
+    const timestamp = new Date().toLocaleDateString('en-AU', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
 
-      const payload: RegistrationFormData = {
-        ...formData,
-        dateSubmitted: timestamp,
-      };
+    const payload: RegistrationFormData = {
+      ...formData,
+      dateSubmitted: timestamp,
+    };
 
-      const result = await registerStudent(payload);
+    const result = await registerStudent(payload);
 
-      if (!result?.success) {
-        alert(result?.message || 'Registration failed.');
-        return;
-      }
-
-      const newRecord = {
-        ...payload,
-      };
-
-      // Success UI state updates
-      setSubmittedData(newRecord);
-      setIsSubmitted(true);
-      setRegistrationId(result.registrationId);
-
-      const newCount = currentCount + 1;
-      onSuccess(newCount);
-
-      alert(`Registration successful!\nRegistration ID: ${result.registrationId}`);
-
-      // Scroll only on success
-      const section = document.getElementById('registration-section');
-      section?.scrollIntoView({ behavior: 'smooth' });
-
-    } catch (error) {
-      console.error('Registration error:', error);
-      alert('Something went wrong. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
+    if (!result?.success) {
+      alert(result?.message || 'Registration failed.');
+      return;
     }
-  };
+
+    const newRecord = {
+      ...payload,
+    };
+
+    // Success UI state updates
+    setSubmittedData(newRecord);
+    setIsSubmitted(true);
+    setRegistrationId(result.registrationId);
+
+    const newCount = currentCount + 1;
+    onSuccess(newCount);
+
+    alert(`Registration successful!\nRegistration ID: ${result.registrationId}`);
+
+    // Scroll only on success
+    const section = document.getElementById('registration-section');
+    section?.scrollIntoView({ behavior: 'smooth' });
+
+  } catch (error) {
+    console.error('Registration error:', error);
+    alert('Something went wrong. Please try again later.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const handleResetForm = () => {
     setFormData({
