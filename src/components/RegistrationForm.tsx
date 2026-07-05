@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Info, Sparkles, User, Mail, Phone, Clock, FileText, Download} from 'lucide-react';
 import { RegistrationFormData } from '../types';
-import { registerStudent } from "@/services/registrationService";
+import { registerStudent } from "@/src/services/registrationService";
 
 
 interface RegistrationFormProps {
